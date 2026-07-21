@@ -41,7 +41,7 @@ return [
 
         'light' => [
             // Primary brand color — used for filled buttons, active states, key accents.
-            'primary' => '#0F766E',
+            'primary' => '#C2410C',
             'on-primary' => '#FFFFFF',
 
             // Secondary / muted action color.
@@ -67,15 +67,15 @@ return [
             'on-destructive' => '#FFFFFF',
 
             // Tertiary accent — for highlights, badges, emphasis not covered by primary.
-            'accent' => '#C2410C',
+            'accent' => '#EA580C',
             'on-accent' => '#FFFFFF',
         ],
 
         'dark' => [
             // Leave empty or partial to auto-derive from `light` (luminance inversion).
             // Specify any token here to override the derived value.
-            'primary' => '#14B8A6',
-            'on-primary' => '#FFFFFF',
+            'primary' => '#FB923C',
+            'on-primary' => '#1A1207',
 
             'secondary' => '#94A3B8',
             'on-secondary' => '#0F172A',

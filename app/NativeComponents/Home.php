@@ -23,6 +23,11 @@ class Home extends NativeComponent
         Browser::open('https://github.com/NativePHP');
     }
 
+    public function openImageStudio(): void
+    {
+        $this->navigate('/image-studio');
+    }
+
     public function render(): View
     {
         return view('native.home');

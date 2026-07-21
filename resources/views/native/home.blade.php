@@ -68,6 +68,20 @@
             </row>
         </column>
 
+        <row
+            ref="image-studio-link"
+            a11y-label="Open Image Studio"
+            a11y-hint="Opens the native image manipulation demo"
+            class="w-full items-center gap-3 rounded-lg bg-theme-primary px-4 py-[14] mt-3"
+            @press="openImageStudio"
+        >
+            <icon name="crop" class="text-theme-on-primary" :size="20" />
+            <text class="flex-1 text-sm font-semibold text-theme-on-primary">
+                Open Image Studio
+            </text>
+            <icon name="chevron.right" class="text-theme-on-primary opacity-70" :size="16" />
+        </row>
+
         <divider class="w-full my-6 border-theme-outline" />
 
         <column ref="welcome-footer" class="w-full items-center gap-1">

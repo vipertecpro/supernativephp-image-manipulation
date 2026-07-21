@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f3b24460a8c2d00a190d7910556d5f2",
+    "content-hash": "34956b2f73bd9f0478bff4259fbc0182",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2708,6 +2708,61 @@
             "time": "2026-07-17T01:37:54+00:00"
         },
         {
+            "name": "nativephp/mobile-camera",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NativePHP/mobile-camera.git",
+                "reference": "1cdbf3059517f3cf2b0e4a341b6c298eba4123f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NativePHP/mobile-camera/zipball/1cdbf3059517f3cf2b0e4a341b6c298eba4123f6",
+                "reference": "1cdbf3059517f3cf2b0e4a341b6c298eba4123f6",
+                "shasum": ""
+            },
+            "require": {
+                "nativephp/mobile": "^3.0 || ^4.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^2.7|^3.0|^4.0"
+            },
+            "type": "nativephp-plugin",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Native\\Mobile\\Providers\\CameraServiceProvider"
+                    ]
+                },
+                "nativephp": {
+                    "manifest": "nativephp.json"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Native\\Mobile\\Providers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NativePHP",
+                    "email": "info@nativephp.com"
+                }
+            ],
+            "description": "Camera plugin for NativePHP Mobile (Photo capture, Video recording, Gallery picker)",
+            "support": {
+                "issues": "https://github.com/NativePHP/mobile-camera/issues",
+                "source": "https://github.com/NativePHP/mobile-camera/tree/1.0.4"
+            },
+            "time": "2026-07-17T01:38:16+00:00"
+        },
+        {
             "name": "nativephp/native-ui",
             "version": "0.1.0",
             "source": {
@@ -2760,6 +2815,56 @@
                 "source": "https://github.com/NativePHP/mobile-ui/tree/0.1.0"
             },
             "time": "2026-07-17T18:09:13+00:00"
+        },
+        {
+            "name": "nativephp/plugin-image-cropper",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "packages/image-cropper",
+                "reference": "2ad895c6b404341a09bbc0cd6673dea8ea85ced1"
+            },
+            "require": {
+                "nativephp/mobile": "^3.0|^4.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "pestphp/pest": "^3.0"
+            },
+            "type": "nativephp-plugin",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Nativephp\\ImageCropper\\ImageCropperServiceProvider"
+                    ]
+                },
+                "nativephp": {
+                    "manifest": "nativephp.json"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nativephp\\ImageCropper\\": "src/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "pest"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Your Name",
+                    "email": "you@example.com"
+                }
+            ],
+            "description": "A fully native, hand-written freehand image cropper for NativePHP Mobile.",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "nesbot/carbon",
@@ -10621,7 +10726,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "nativephp/mobile": 5,
-        "nativephp/native-ui": 20
+        "nativephp/native-ui": 20,
+        "nativephp/plugin-image-cropper": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

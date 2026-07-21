@@ -15,6 +15,10 @@
             "name": "nativephp-plugins",
             "type": "composer",
             "url": "https://plugins.nativephp.com"
+        },
+        {
+            "type": "path",
+            "url": "packages/image-cropper"
         }
     ],
     "require": {
@@ -24,7 +28,9 @@
         "laravel/tinker": "^3.0",
         "nativephp/mobile": "~4.0.0@RC",
         "nativephp/mobile-browser": "^1.0",
-        "nativephp/native-ui": "@dev"
+        "nativephp/mobile-camera": "^1.0",
+        "nativephp/native-ui": "@dev",
+        "nativephp/plugin-image-cropper": "@dev"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
