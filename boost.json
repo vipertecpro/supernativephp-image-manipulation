@@ -1,17 +1,21 @@
 {
     "agents": [
-        "claude_code",
-        "factory",
-        "opencode"
+        "claude_code"
     ],
     "cloud": false,
     "guidelines": true,
     "mcp": true,
     "nightwatch": false,
+    "packages": [
+        "nativephp/mobile",
+        "nativephp/native-ui",
+        "nativephp/mobile-browser"
+    ],
     "sail": false,
     "skills": [
         "laravel-best-practices",
         "pest-testing",
-        "tailwindcss-development"
+        "nativephp-mobile",
+        "nativephp-webview-to-native"
     ]
 }
