@@ -6979,16 +6979,16 @@
         },
         {
             "name": "vipertecpro/image-cropper",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vipertecpro/image-cropper.git",
-                "reference": "2f8a4cb864e4d034065342d7377d2bf14a533960"
+                "reference": "d40fac6dba7d6541bd019b1137c70d33204392d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vipertecpro/image-cropper/zipball/2f8a4cb864e4d034065342d7377d2bf14a533960",
-                "reference": "2f8a4cb864e4d034065342d7377d2bf14a533960",
+                "url": "https://api.github.com/repos/vipertecpro/image-cropper/zipball/d40fac6dba7d6541bd019b1137c70d33204392d3",
+                "reference": "d40fac6dba7d6541bd019b1137c70d33204392d3",
                 "shasum": ""
             },
             "require": {
@@ -7040,9 +7040,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vipertecpro/image-cropper/issues",
-                "source": "https://github.com/vipertecpro/image-cropper/tree/v1.0.1"
+                "source": "https://github.com/vipertecpro/image-cropper/tree/v1.0.2"
             },
-            "time": "2026-07-22T18:56:43+00:00"
+            "time": "2026-07-22T19:10:15+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
