@@ -1,96 +1,117 @@
-<column
-    ref="welcome-screen"
-    fill
-    center
-    class="safe-area bg-theme-background px-6 py-6"
->
-    <column
-        ref="welcome-card"
-        class="w-full rounded-2xl bg-theme-surface p-10 shadow-md"
-    >
-        <row ref="nativephp-logo-container" class="w-full justify-center mb-6">
-            <image
-                ref="nativephp-logo"
-                src="{{ public_path('images/nativephp-logo.png') }}"
-                alt="NativePHP"
-                class="w-16 h-16 object-contain"
-            />
-        </row>
+{{--
+    Home — a gallery of image-cropper examples. Each card opens the SAME native
+    plugin configured differently (full-featured, locked profile, locked cover),
+    showing how one cropper covers many use cases.
+--}}
+<column fill class="safe-area bg-theme-background px-6 py-6">
+    <scroll-view class="w-full flex-1">
+        <column class="w-full items-center gap-7">
 
-        <text font="accent" ref="welcome-title" class="text-xl font-bold text-center text-theme-on-surface">
-            NativePHP Starter Kit
-        </text>
-        <text font="lobster" ref="welcome-subtitle" class="mt-2 mb-8 text-center text-theme-on-surface-variant">
-            Your app is ready.
-        </text>
-
-        <column class="w-full gap-3">
-            <row
-                ref="docs-link"
-                a11y-label="Read the Docs"
-                a11y-hint="Opens the documentation in an in-app browser"
-                class="w-full items-center gap-3 rounded-lg border border-theme-outline bg-theme-surface-variant px-4 py-[14]"
-                @press="openDocs"
-            >
-                <icon name="book.pages" class="text-theme-on-surface" :size="20" />
-                <text  class="flex-1 text-sm font-normal text-theme-on-surface">
-                    Read the Docs
+            {{-- Header --}}
+            <column class="w-full items-center gap-2 mt-2">
+                <image
+                    src="{{ public_path('images/nativephp-logo.png') }}"
+                    alt="NativePHP"
+                    class="w-16 h-16 object-contain"
+                />
+                <text font="accent" class="text-2xl font-bold text-center text-theme-on-surface">
+                    Image Cropper
                 </text>
-                <icon name="arrow.up.right" class="text-theme-on-surface opacity-50" :size="16" />
-            </row>
-
-            <row
-                ref="community-link"
-                a11y-label="Join the Community"
-                a11y-hint="Opens the Discord invite in your browser"
-                class="w-full items-center gap-3 rounded-lg border border-theme-outline bg-theme-surface-variant px-4 py-[14]"
-                @press="openDiscord"
-            >
-                <icon name="person.3" class="text-theme-on-surface" :size="20" />
-                <text  class="flex-1 text-sm font-normal text-theme-on-surface">
-                    Join the Community
+                <text class="text-center text-sm text-theme-on-surface-variant px-2">
+                    One configurable native cropper — tap an example to see it set up differently.
                 </text>
-                <icon name="arrow.up.right" class="text-theme-on-surface opacity-50" :size="16" />
-            </row>
+            </column>
 
-            <row
-                ref="github-link"
-                a11y-label="Explore on GitHub"
-                a11y-hint="Opens the GitHub organization in your browser"
-                class="w-full items-center gap-3 rounded-lg border border-theme-outline bg-theme-surface-variant px-4 py-[14]"
-                @press="openGitHub"
-            >
-                <icon name="chevron.left.forwardslash.chevron.right" class="text-theme-on-surface" :size="20" />
-                <text  class="flex-1 text-sm font-normal text-theme-on-surface">
-                    Explore on GitHub
-                </text>
-                <icon name="arrow.up.right" class="text-theme-on-surface opacity-50" :size="16" />
-            </row>
+            {{-- Example cards --}}
+            <column class="w-full gap-3">
+
+                <row
+                    a11y-label="Image Studio"
+                    a11y-hint="The full-featured example with every option"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openImageStudio"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="slider.horizontal.3" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Image Studio</text>
+                        <text class="text-xs text-theme-on-surface-variant">Every preset · crop, adjust &amp; filter</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
+                    a11y-label="Profile Photo"
+                    a11y-hint="A circular avatar cropper, locked and simple"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openProfilePhoto"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="person.crop.circle" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Profile Photo</text>
+                        <text class="text-xs text-theme-on-surface-variant">Circular · locked 1:1 · crop only</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
+                    a11y-label="Cover Photo"
+                    a11y-hint="A wide banner cropper, locked and simple"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openCoverPhoto"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="photo.on.rectangle.angled" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Cover Photo</text>
+                        <text class="text-xs text-theme-on-surface-variant">Wide banner · locked ratio · crop only</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
+                    a11y-label="Adjust"
+                    a11y-hint="Colour adjustments only, no cropping"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openAdjustPhoto"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="slider.horizontal.3" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Adjust</text>
+                        <text class="text-xs text-theme-on-surface-variant">Brightness / contrast / saturation · no crop</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
+                    a11y-label="Filter"
+                    a11y-hint="One-tap filters only, no cropping"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openFilterPhoto"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="camera.filters" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Filter</text>
+                        <text class="text-xs text-theme-on-surface-variant">One-tap filter presets · no crop</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+            </column>
+
+            <text class="text-center text-xs text-theme-on-surface-variant px-4">
+                Same plugin, different config — presets, tools &amp; modes. On Done the cropped
+                file is saved on the device (swap in your own backend sync).
+            </text>
+
         </column>
-
-        <row
-            ref="image-studio-link"
-            a11y-label="Open Image Studio"
-            a11y-hint="Opens the native image manipulation demo"
-            class="w-full items-center gap-3 rounded-lg bg-theme-primary px-4 py-[14] mt-3"
-            @press="openImageStudio"
-        >
-            <icon name="crop" class="text-theme-on-primary" :size="20" />
-            <text class="flex-1 text-sm font-semibold text-theme-on-primary">
-                Open Image Studio
-            </text>
-            <icon name="chevron.right" class="text-theme-on-primary opacity-70" :size="16" />
-        </row>
-
-        <divider class="w-full my-6 border-theme-outline" />
-
-        <column ref="welcome-footer" class="w-full items-center gap-1">
-            <text font="lobster" class="w-full text-center text-theme-on-surface-variant">
-                Built on NativePHP · Made by Bifrost
-            </text>
-            <text font="lobster" class="w-full text-center text-theme-on-surface-variant">
-                Powered by Laravel
-            </text>
-        </column>
-    </column>
+    </scroll-view>
 </column>

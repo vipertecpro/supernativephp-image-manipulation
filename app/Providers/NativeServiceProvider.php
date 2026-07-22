@@ -3,10 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Native\Mobile\Providers\BrowserServiceProvider;
 use Native\Mobile\Providers\CameraServiceProvider;
-use Nativephp\ImageCropper\ImageCropperServiceProvider;
 use Nativephp\NativeUi\NativeUIServiceProvider;
+use Vipertecpro\ImageCropper\ImageCropperServiceProvider;
 
 class NativeServiceProvider extends ServiceProvider
 {
@@ -39,10 +38,8 @@ class NativeServiceProvider extends ServiceProvider
     {
         return [
             NativeUIServiceProvider::class,
-            BrowserServiceProvider::class,
             CameraServiceProvider::class,
             ImageCropperServiceProvider::class,
-
         ];
     }
 }

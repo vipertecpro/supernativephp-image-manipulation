@@ -1,11 +1,14 @@
 <?php
 
+use App\NativeComponents\AdjustPhoto;
+use App\NativeComponents\CoverPhoto;
+use App\NativeComponents\FilterPhoto;
 use App\NativeComponents\ImageStudio;
+use App\NativeComponents\ProfilePhoto;
 use Illuminate\Support\Facades\File;
-use Native\Mobile\Events\Camera\PhotoTaken;
 use Native\Mobile\Events\Gallery\MediaSelected;
 use Native\Mobile\Testing\Native;
-use Nativephp\ImageCropper\Events\ImageCropped;
+use Vipertecpro\ImageCropper\Events\ImageCropped;
 
 /**
  * Write a throwaway JPEG whose SOF0 marker reports the given dimensions. Built
@@ -29,84 +32,113 @@ function fakePickedImage(int $width = 600, int $height = 400): string
     return $path;
 }
 
+/** Read a component's protected crop config for assertions. */
+function cropperOptionsOf(object $component): array
+{
+    $method = new ReflectionMethod($component, 'cropperOptions');
+    $method->setAccessible(true);
+
+    return $method->invoke($component);
+}
+
+/** Invoke any protected no-arg method (storageDirectory / uploadEndpoint). */
+function callProtected(object $component, string $method): mixed
+{
+    $reflection = new ReflectionMethod($component, $method);
+    $reflection->setAccessible(true);
+
+    return $reflection->invoke($component);
+}
+
 afterEach(function () {
     File::deleteDirectory(storage_path('app/studio-tests'));
+    foreach (['cropped', 'studio', 'avatars', 'covers', 'adjusted', 'filtered'] as $dir) {
+        File::deleteDirectory(storage_path('app/'.$dir));
+    }
 });
 
-it('shows an empty preview with Edit + Update', function () {
-    Native::test(ImageStudio::class)
+// The five example screens all share InteractsWithImageCropper, so the flow is
+// identical — only their config, empty-state copy, and storage folder differ.
+dataset('cropperScreens', [
+    'ImageStudio' => [ImageStudio::class, 'Add a photo to get started', 'studio'],
+    'ProfilePhoto' => [ProfilePhoto::class, 'Add a profile photo', 'avatars'],
+    'CoverPhoto' => [CoverPhoto::class, 'Add a cover photo', 'covers'],
+    'AdjustPhoto' => [AdjustPhoto::class, 'Add a photo to adjust', 'adjusted'],
+    'FilterPhoto' => [FilterPhoto::class, 'Add a photo to filter', 'filtered'],
+]);
+
+it('shows an empty preview with Edit + Update', function (string $component, string $emptyText) {
+    Native::test($component)
         ->assertSet('sourcePath', null)
         ->assertSee('Edit')
         ->assertSee('Update')
-        ->assertSee('Add a photo to get started');
-});
+        ->assertSee($emptyText);
+})->with('cropperScreens');
 
-it('opens the gallery from Update', function () {
-    Native::test(ImageStudio::class)
+it('opens the gallery from Update', function (string $component) {
+    Native::test($component)
         ->call('update')
         ->assertNativeCalled('Camera.PickMedia');
-});
+})->with('cropperScreens');
 
-it('opens the camera from updateFromCamera', function () {
-    Native::test(ImageStudio::class)
-        ->call('updateFromCamera')
-        ->assertNativeCalled('Camera.GetPhoto');
-});
-
-it('sets the source when a photo is selected (and opens the editor)', function () {
+it('goes straight to the editor when a photo is selected (no preview flash)', function (string $component) {
     $source = fakePickedImage();
 
-    Native::test(ImageStudio::class)
+    // Picking opens the editor with the raw image but does NOT set it as the
+    // preview — the preview only updates once the crop result comes back.
+    Native::test($component)
         ->emitNative(MediaSelected::class, ['success' => true, 'files' => [$source], 'count' => 1])
-        ->assertSet('sourcePath', $source)
-        ->assertSee('Tap Edit to crop');
-});
+        ->assertSet('sourcePath', null);
+})->with('cropperScreens');
 
-it('sets the source from a captured photo', function () {
-    $source = fakePickedImage();
-
-    Native::test(ImageStudio::class)
-        ->emitNative(PhotoTaken::class, ['path' => $source])
-        ->assertSet('sourcePath', $source);
-});
-
-it('ignores a cancelled / empty selection', function () {
-    Native::test(ImageStudio::class)
+it('ignores a cancelled / empty selection', function (string $component) {
+    Native::test($component)
         ->emitNative(MediaSelected::class, ['success' => false, 'files' => [], 'count' => 0])
         ->assertSet('sourcePath', null);
-});
+})->with('cropperScreens');
 
-it('Edit opens the crop editor when there is a photo', function () {
-    $source = fakePickedImage();
-
-    Native::test(ImageStudio::class)
-        ->emitNative(MediaSelected::class, ['success' => true, 'files' => [$source], 'count' => 1])
-        ->call('startEdit')          // no-op bridge off-device, must not error
-        ->assertSet('sourcePath', $source);
-});
-
-it('Edit picks a photo first when there is none', function () {
-    Native::test(ImageStudio::class)
+it('Edit picks a photo first when there is none', function (string $component) {
+    Native::test($component)
         ->call('startEdit')
         ->assertNativeCalled('Camera.PickMedia');
-});
+})->with('cropperScreens');
 
-it('adopts the cropped file returned by the native cropper', function () {
+it('persists the cropped file into the screen\'s own folder', function (string $component, string $emptyText, string $dir) {
     $source = fakePickedImage();
     $cropped = fakePickedImage(400, 400);
+    $stored = storage_path('app/'.$dir.'/'.basename($cropped));
 
-    Native::test(ImageStudio::class)
+    Native::test($component)
         ->emitNative(MediaSelected::class, ['success' => true, 'files' => [$source], 'count' => 1])
         ->emitNative(ImageCropped::class, ['path' => $cropped])
-        ->assertSet('sourcePath', $cropped);
+        ->assertSet('sourcePath', $stored);
+
+    expect(is_file($stored))->toBeTrue();
+})->with('cropperScreens');
+
+it('locks down the profile + cover configs but leaves the studio open', function () {
+    $profile = cropperOptionsOf(new ProfilePhoto);
+    expect($profile['preset'])->toBe('profile')
+        ->and($profile['presets'])->toBe([])
+        ->and($profile['modes'])->toBe(['crop']);
+
+    $cover = cropperOptionsOf(new CoverPhoto);
+    expect($cover['preset'])->toBe('cover')->and($cover['modes'])->toBe(['crop']);
+
+    expect(cropperOptionsOf(new ImageStudio))->toBe([]);
+
+    // Adjust / filter examples turn crop off entirely.
+    expect(cropperOptionsOf(new AdjustPhoto)['modes'])->toBe(['adjust']);
+    expect(cropperOptionsOf(new FilterPhoto)['modes'])->toBe(['filter']);
 });
 
-it('resets back to the empty preview', function () {
-    $source = fakePickedImage();
+it('routes each screen to its own device folder and backend endpoint', function () {
+    expect(callProtected(new ProfilePhoto, 'storageDirectory'))->toBe('avatars')
+        ->and(callProtected(new ProfilePhoto, 'uploadEndpoint'))->toContain('/api/user/avatar');
 
-    Native::test(ImageStudio::class)
-        ->emitNative(MediaSelected::class, ['success' => true, 'files' => [$source], 'count' => 1])
-        ->call('reset')
-        ->assertSet('sourcePath', null)
-        ->assertSee('Add a photo to get started');
+    expect(callProtected(new CoverPhoto, 'storageDirectory'))->toBe('covers')
+        ->and(callProtected(new CoverPhoto, 'uploadEndpoint'))->toContain('/api/user/cover');
+
+    expect(callProtected(new AdjustPhoto, 'storageDirectory'))->toBe('adjusted');
+    expect(callProtected(new FilterPhoto, 'storageDirectory'))->toBe('filtered');
 });

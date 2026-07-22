@@ -4,28 +4,32 @@ namespace App\NativeComponents;
 
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
-use Native\Mobile\Facades\Browser;
 
 class Home extends NativeComponent
 {
-    public function openDocs(): void
-    {
-        Browser::inApp('https://nativephp.com/docs/mobile');
-    }
-
-    public function openDiscord(): void
-    {
-        Browser::open('https://discord.gg/nativephp');
-    }
-
-    public function openGitHub(): void
-    {
-        Browser::open('https://github.com/NativePHP');
-    }
-
     public function openImageStudio(): void
     {
         $this->navigate('/image-studio');
+    }
+
+    public function openProfilePhoto(): void
+    {
+        $this->navigate('/profile-photo');
+    }
+
+    public function openCoverPhoto(): void
+    {
+        $this->navigate('/cover-photo');
+    }
+
+    public function openAdjustPhoto(): void
+    {
+        $this->navigate('/adjust-photo');
+    }
+
+    public function openFilterPhoto(): void
+    {
+        $this->navigate('/filter-photo');
     }
 
     public function render(): View
