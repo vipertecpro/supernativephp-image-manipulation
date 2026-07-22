@@ -14,14 +14,6 @@ to show how one plugin covers many real use cases.
 
 ▶️ **[Watch the full demo](art/demo.mp4)** — a walkthrough of the five examples on iOS.
 
-## Screenshots
-
-| Home (examples) | Image Studio | Profile Photo |
-|:---:|:---:|:---:|
-| ![Home](art/home.png) | ![Studio](art/studio.png) | ![Profile](art/profile.png) |
-
-> Screenshots live in [`art/`](art/) — drop your own captures there (see that folder's note for filenames).
-
 ## The examples
 
 | Screen | Configuration | Use case |
