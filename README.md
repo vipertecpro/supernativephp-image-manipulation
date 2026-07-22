@@ -8,6 +8,12 @@ The home screen is a gallery of **five examples**, each opening the *same* plugi
 configured differently — from a full-featured studio down to a bare, locked cropper —
 to show how one plugin covers many real use cases.
 
+## Demo
+
+[![Watch the demo](art/demo-poster.png)](art/demo.mp4)
+
+▶️ **[Watch the full demo](art/demo.mp4)** — a walkthrough of the five examples on iOS.
+
 ## Screenshots
 
 | Home (examples) | Image Studio | Profile Photo |
