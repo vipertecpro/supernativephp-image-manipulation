@@ -866,16 +866,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.15.1",
+            "version": "7.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "61443dfb33c62f308ee8add20f45b4d6e4bf8d2f"
+                "reference": "744101956d78b7c1384d0cbf379db13e859167bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/61443dfb33c62f308ee8add20f45b4d6e4bf8d2f",
-                "reference": "61443dfb33c62f308ee8add20f45b4d6e4bf8d2f",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/744101956d78b7c1384d0cbf379db13e859167bf",
+                "reference": "744101956d78b7c1384d0cbf379db13e859167bf",
                 "shasum": ""
             },
             "require": {
@@ -974,7 +974,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.15.1"
+                "source": "https://github.com/guzzle/guzzle/tree/7.15.2"
             },
             "funding": [
                 {
@@ -990,7 +990,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-18T11:23:11+00:00"
+            "time": "2026-07-26T23:23:20+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1349,16 +1349,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v13.21.1",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "303b5f8dc899f89e8c38c350b639b8fbd193ed16"
+                "reference": "92a707229148e57f08a249211c8a5a194159c619"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/303b5f8dc899f89e8c38c350b639b8fbd193ed16",
-                "reference": "303b5f8dc899f89e8c38c350b639b8fbd193ed16",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/92a707229148e57f08a249211c8a5a194159c619",
+                "reference": "92a707229148e57f08a249211c8a5a194159c619",
                 "shasum": ""
             },
             "require": {
@@ -1384,7 +1384,7 @@
                 "league/flysystem": "^3.25.1",
                 "league/flysystem-local": "^3.25.1",
                 "league/uri": "^7.5.1",
-                "monolog/monolog": "^3.0",
+                "monolog/monolog": "^3.10",
                 "nesbot/carbon": "^3.8.4",
                 "nunomaduro/termwind": "^2.0",
                 "php": "^8.3",
@@ -1572,7 +1572,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-21T14:27:35+00:00"
+            "time": "2026-07-27T14:48:58+00:00"
         },
         {
             "name": "laravel/mcp",
@@ -6954,16 +6954,16 @@
         },
         {
             "name": "vipertecpro/image-cropper",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vipertecpro/image-cropper.git",
-                "reference": "cb311f4aca73d7d43991fd755ba142c9859ca566"
+                "reference": "54ad45457d96669357b52d8b28b2f3e008257995"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vipertecpro/image-cropper/zipball/cb311f4aca73d7d43991fd755ba142c9859ca566",
-                "reference": "cb311f4aca73d7d43991fd755ba142c9859ca566",
+                "url": "https://api.github.com/repos/vipertecpro/image-cropper/zipball/54ad45457d96669357b52d8b28b2f3e008257995",
+                "reference": "54ad45457d96669357b52d8b28b2f3e008257995",
                 "shasum": ""
             },
             "require": {
@@ -7015,9 +7015,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vipertecpro/image-cropper/issues",
-                "source": "https://github.com/vipertecpro/image-cropper/tree/v1.2.0"
+                "source": "https://github.com/vipertecpro/image-cropper/tree/v1.3.0"
             },
-            "time": "2026-07-27T08:26:54+00:00"
+            "time": "2026-07-27T18:52:49+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
