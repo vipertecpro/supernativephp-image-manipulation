@@ -74,6 +74,54 @@
                 </row>
 
                 <row
+                    a11y-label="Social Post"
+                    a11y-hint="An Instagram-style post: three ratios plus filters"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openSocialPost"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="square.grid.2x2" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Social Post</text>
+                        <text class="text-xs text-theme-on-surface-variant">Square / portrait / 16:9 · filters · like a feed post</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
+                    a11y-label="Story"
+                    a11y-hint="A locked vertical 9:16 story crop with colour adjust"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openStoryPhoto"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="rectangle.portrait" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Story</text>
+                        <text class="text-xs text-theme-on-surface-variant">Vertical 9:16 · locked · like a status/story</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
+                    a11y-label="Video Thumbnail"
+                    a11y-hint="A locked 16:9 thumbnail with the full editing suite"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openVideoThumbnail"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="play.rectangle" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Video Thumbnail</text>
+                        <text class="text-xs text-theme-on-surface-variant">16:9 · crop, adjust &amp; filter · like a video cover</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
                     a11y-label="Adjust"
                     a11y-hint="Colour adjustments only, no cropping"
                     class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"

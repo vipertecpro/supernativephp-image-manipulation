@@ -22,6 +22,21 @@ class Home extends NativeComponent
         $this->navigate('/cover-photo');
     }
 
+    public function openSocialPost(): void
+    {
+        $this->navigate('/social-post');
+    }
+
+    public function openStoryPhoto(): void
+    {
+        $this->navigate('/story-photo');
+    }
+
+    public function openVideoThumbnail(): void
+    {
+        $this->navigate('/video-thumbnail');
+    }
+
     public function openAdjustPhoto(): void
     {
         $this->navigate('/adjust-photo');

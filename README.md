@@ -1,12 +1,13 @@
 # Image Cropper — NativePHP Mobile Demo
 
-A [NativePHP Mobile](https://nativephp.com/docs/mobile) demo app that showcases the
-[`vipertecpro/image-cropper`](https://github.com/vipertecpro/image-cropper) plugin — a
-fully native, hand-written image cropper & editor for iOS and Android.
+A [NativePHP Mobile](https://nativephp.com/docs/mobile) demo app for the
+[`vipertecpro/image-cropper`](https://github.com/vipertecpro/image-cropper)
+plugin — a fully native, hand-written image cropper & editor for iOS and Android.
 
-The home screen is a gallery of **five examples**, each opening the *same* plugin
-configured differently — from a full-featured studio down to a bare, locked cropper —
-to show how one plugin covers many real use cases.
+The home screen is a gallery of **eight examples**, each opening the *same* plugin
+configured differently — from a full-featured studio down to a bare, locked
+cropper — modeled on the image flows real apps use (profile avatars, cover
+banners, feed posts, stories, video thumbnails).
 
 ## Demo
 
@@ -16,39 +17,44 @@ to show how one plugin covers many real use cases.
 
 ## The examples
 
-| Screen | Configuration | Use case |
+| Screen | Configuration | Real-world use case |
 |---|---|---|
 | **Image Studio** | everything on (all presets, crop + adjust + filter) | a full editor |
-| **Profile Photo** | `preset: profile`, `presets: []`, `modes: ['crop']` | locked circular avatar |
-| **Cover Photo** | `preset: cover`, `presets: []`, `modes: ['crop']` | locked wide banner |
+| **Profile Photo** | `preset: profile`, `presets: []`, `modes: ['crop']` | locked circular avatar (LinkedIn/Facebook-style) |
+| **Cover Photo** | `preset: cover`, `presets: []`, `modes: ['crop']` | locked wide banner (profile cover) |
+| **Social Post** | `presets: [square, portrait, landscape]`, `modes: ['crop','filter']` | feed post with selectable ratios + filters (Instagram-style) |
+| **Story** | `preset: story`, `presets: []`, `modes: ['crop','adjust']` | locked 9:16 vertical story/status |
+| **Video Thumbnail** | `preset: landscape`, `presets: []`, all modes, `outputSize: 1280` | 16:9 video thumbnail (YouTube-style) |
 | **Adjust** | `modes: ['adjust']` | colour-adjust the whole photo, no crop |
 | **Filter** | `modes: ['filter']` | one-tap filters on the whole photo, no crop |
 
-Each is a thin `NativeComponent` that shares one trait,
+Each screen is a thin `NativeComponent` under
+[`app/NativeComponents`](app/NativeComponents) that shares one trait,
 [`App\Concerns\InteractsWithImageCropper`](app/Concerns/InteractsWithImageCropper.php),
-and only declares:
+and only declares its own crop config, storage folder, and (optional) upload
+endpoint:
 
 ```php
-protected function cropperOptions(): array  { return ['preset' => 'profile', 'presets' => [], 'modes' => ['crop']]; }
-protected function storageDirectory(): string { return 'avatars'; }                         // its own device folder
-protected function uploadEndpoint(): ?string  { return 'https://your-api.example.com/api/user/avatar'; } // its own API route
+protected function cropperOptions(): array   { return ['preset' => 'profile', 'presets' => [], 'modes' => ['crop']]; }
+protected function storageDirectory(): string { return 'avatars'; }
+protected function uploadEndpoint(): ?string  { return 'https://your-api.example.com/api/user/avatar'; }
 ```
 
 ## How the flow works
 
 1. Tap **Edit** → pick a photo → the native crop editor opens **immediately**.
 2. Adjust / crop / filter, then tap **Done**.
-3. The plugin returns a real cropped file; the trait's `persistCroppedImage()` saves it
-   into that screen's folder (and is ready to POST it to that screen's endpoint), then
-   the preview updates.
+3. The plugin returns a real cropped file; the trait's `persistCroppedImage()`
+   saves it into that screen's folder (and is ready to POST it to that screen's
+   endpoint), then the preview updates.
 
 The storage/backend hook is the single integration point — see
-[`persistCroppedImage()`](app/Concerns/InteractsWithImageCropper.php). It keeps a copy on
-device by default, with a fully-commented `Http` upload ready to enable.
+[`persistCroppedImage()`](app/Concerns/InteractsWithImageCropper.php). It keeps a
+copy on device by default, with a fully-commented `Http` upload ready to enable.
 
 ## Running it
 
-**Requirements:** PHP 8.4, [NativePHP Mobile](https://nativephp.com/docs/mobile/4/getting-started/installation)
+**Requirements:** PHP 8.4 and [NativePHP Mobile](https://nativephp.com/docs/mobile/4/getting-started/installation)
 set up (Xcode for iOS, Android Studio for Android).
 
 ```bash
@@ -56,13 +62,11 @@ git clone https://github.com/vipertecpro/supernativephp-image-manipulation
 cd supernativephp-image-manipulation
 composer install
 
-# then build & run on a simulator/emulator (pick one):
-php artisan native:run ios
-php artisan native:run android
+php artisan native:run ios       # or: android
 ```
 
-The `vipertecpro/image-cropper` plugin installs automatically via Composer and is
-registered in [`app/Providers/NativeServiceProvider.php`](app/Providers/NativeServiceProvider.php).
+The `vipertecpro/image-cropper` plugin installs via Composer and is registered in
+[`app/Providers/NativeServiceProvider.php`](app/Providers/NativeServiceProvider.php).
 
 ## Tests
 
@@ -70,6 +74,17 @@ registered in [`app/Providers/NativeServiceProvider.php`](app/Providers/NativeSe
 php artisan test
 ```
 
+## Contributing
+
+This app exists to demonstrate the plugin, so the most useful contributions are
+**new example screens** or clearer existing ones. To add one, create a
+`NativeComponent` in [`app/NativeComponents`](app/NativeComponents) that uses the
+`InteractsWithImageCropper` trait, add it to the home gallery, and open a pull
+request. Bug reports and doc fixes are welcome too.
+
+Found something in the cropper itself? Please report it on the
+[plugin repo](https://github.com/vipertecpro/image-cropper/issues).
+
 ## License
 
-MIT.
+MIT — see [LICENSE.md](LICENSE.md).
