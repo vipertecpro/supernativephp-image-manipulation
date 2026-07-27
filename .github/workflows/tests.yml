@@ -1,0 +1,38 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip
+          coverage: none
+
+      # Installs from composer.lock — every package (including the NativePHP
+      # ones) resolves to public GitHub dists, so no license secrets needed.
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Check code style
+        run: vendor/bin/pint --test
+
+      # phpunit.xml carries the testing env (sqlite :memory:, APP_KEY), but
+      # the NativePHP runtime also reads .env directly — give it one.
+      - name: Prepare environment file
+        run: cp .env.example .env && php artisan key:generate
+
+      - name: Run tests
+        run: php artisan test

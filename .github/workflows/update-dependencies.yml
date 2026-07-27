@@ -24,9 +24,19 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip
           coverage: none
 
+      # Only configure license auth when the secrets are actually set —
+      # passing empty credentials makes composer fail. All current deps
+      # resolve from public GitHub dists, so auth is optional.
       - name: Configure Composer Auth
+        env:
+          NATIVEPHP_LICENSE_EMAIL: ${{ secrets.NATIVEPHP_LICENSE_EMAIL }}
+          NATIVEPHP_LICENSE_KEY: ${{ secrets.NATIVEPHP_LICENSE_KEY }}
         run: |
-          composer config --global http-basic.nativephp.composer.sh "${{ secrets.NATIVEPHP_LICENSE_EMAIL }}" "${{ secrets.NATIVEPHP_LICENSE_KEY }}"
+          if [ -n "$NATIVEPHP_LICENSE_EMAIL" ] && [ -n "$NATIVEPHP_LICENSE_KEY" ]; then
+            composer config --global http-basic.nativephp.composer.sh "$NATIVEPHP_LICENSE_EMAIL" "$NATIVEPHP_LICENSE_KEY"
+          else
+            echo "No NativePHP license secrets configured — continuing without auth."
+          fi
 
       - name: Update Composer Dependencies
         run: composer update --no-interaction --no-progress
