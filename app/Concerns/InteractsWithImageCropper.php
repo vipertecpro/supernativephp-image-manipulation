@@ -94,6 +94,24 @@ trait InteractsWithImageCropper
     }
 
     /**
+     * The colours handed to the native editor so it renders in THIS app's
+     * theme instead of the plugin's default look. All keys are optional —
+     * anything omitted falls back to the plugin's system-adaptive default.
+     * Override per screen for bespoke palettes.
+     *
+     * @return array{background?: string, text?: string, accent?: string, highlight?: string}
+     */
+    protected function cropperTheme(): array
+    {
+        return [
+            'background' => '#121417',                                          // the app's screen background
+            'text' => '#FFFFFF',
+            'accent' => config('native-ui.theme.light.primary', '#C2410C'),     // brand primary → Done button
+            'highlight' => config('native-ui.theme.light.primary', '#C2410C'), // …and active states
+        ];
+    }
+
+    /**
      * Open the native crop editor with this screen's config. Pass a path to edit
      * a freshly-picked image; omit it to re-edit the current one.
      */
@@ -102,7 +120,7 @@ trait InteractsWithImageCropper
         $path ??= $this->sourcePath;
 
         if ($path !== null && is_file($path)) {
-            ImageCropper::open($path, $this->cropperOptions());
+            ImageCropper::open($path, ['theme' => $this->cropperTheme()] + $this->cropperOptions());
         }
     }
 
