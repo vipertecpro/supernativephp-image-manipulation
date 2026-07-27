@@ -9,7 +9,7 @@
     "packages": [
         "nativephp/mobile",
         "nativephp/native-ui",
-        "nativephp/mobile-browser"
+        "nativephp/mobile-camera"
     ],
     "sail": false,
     "skills": [
