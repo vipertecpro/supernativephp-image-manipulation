@@ -1,7 +1,8 @@
 {{--
-    Remote image example — the cropper opens straight from an http(s) URL.
-    The plugin downloads the image natively (themed loading screen with
-    Cancel) and then shows the normal editor. See App\NativeComponents\RemoteImage.
+    Remote image example — type/paste any image URL, then crop it. The plugin
+    downloads the URL natively (themed loading screen with Cancel) and opens
+    the normal editor. Non-croppable formats are rejected with a toast.
+    See App\NativeComponents\RemoteImage.
 --}}
 <column class="w-full h-full bg-[#121417] safe-area">
 
@@ -14,37 +15,45 @@
         <column class="w-[40] h-[40]" />
     </row>
 
-    {{-- Result preview + the source URL --}}
+    {{-- Result preview --}}
     <column class="w-full flex-1 items-center justify-center gap-5 px-5">
         @if ($sourcePath)
-            @php([$pw, $ph] = $this->previewBox())
+            @php([$pw, $ph] = $this->previewBox(330, 300))
             <column class="w-[{{ $pw }}] h-[{{ $ph }}] rounded-xl overflow-hidden">
                 <image src="{{ $sourcePath }}" :fit="1" alt="Cropped remote image" class="w-full h-full" />
             </column>
         @else
-            <column class="w-[330] h-[220] rounded-xl items-center justify-center gap-3 bg-white/5 border-2 border-white/15">
-                <icon name="globe" :size="64" class="text-white/25" />
-                <text class="text-xs text-white/40">No local file — the source is a URL</text>
+            <column class="w-[330] h-[200] rounded-xl items-center justify-center gap-3 bg-white/5 border-2 border-white/15">
+                <icon name="globe" :size="56" class="text-white/25" />
+                <text class="text-xs text-white/40">Enter a URL below, then tap Crop</text>
             </column>
         @endif
 
-        <column class="w-full items-center gap-1 px-4">
-            <text class="text-center text-sm text-white/50">
-                {{ $sourcePath ? 'Cropped from the remote source below' : 'Tap Edit to crop straight from this URL' }}
+        {{-- URL input — bound live to $imageUrl; return key starts the crop --}}
+        <column class="w-full gap-2 px-1">
+            <text class="text-xs text-white/50 px-1">Image URL</text>
+            <outlined-text-input
+                native:model.debounce.400ms="imageUrl"
+                placeholder="https://example.com/photo.jpg"
+                keyboard="url"
+                @submit="startEdit"
+                class="w-full"
+            />
+            <text class="text-xs text-white/35 px-1">
+                Croppable formats only — try a .pdf URL to see the validation toast.
             </text>
-            <text class="text-center text-xs text-white/30" :max-lines="1">{{ $imageUrl }}</text>
         </column>
     </column>
 
-    {{-- Bottom bar: Edit (crop this URL) · New Image (another random URL) --}}
+    {{-- Bottom bar: Crop (the typed URL) · Sample (fill a random photo URL) --}}
     <row class="w-full items-center justify-around px-6 py-4 border-t border-white/10">
-        <pressable a11y-label="Edit" class="items-center gap-1" @press="startEdit">
+        <pressable a11y-label="Crop from URL" class="items-center gap-1" @press="startEdit">
             <icon name="crop" :size="24" class="text-white" />
-            <text class="text-xs text-white/80">Edit</text>
+            <text class="text-xs text-white/80">Crop</text>
         </pressable>
-        <pressable a11y-label="New Image" class="items-center gap-1" @press="update">
+        <pressable a11y-label="Fill a sample URL" class="items-center gap-1" @press="fillSample">
             <icon name="arrow.clockwise" :size="24" class="text-white" />
-            <text class="text-xs text-white/80">New Image</text>
+            <text class="text-xs text-white/80">Sample</text>
         </pressable>
     </row>
 

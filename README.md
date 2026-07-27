@@ -75,6 +75,34 @@ The `vipertecpro/image-cropper` plugin installs via Composer and is registered i
 php artisan test
 ```
 
+## Stability & upgrading
+
+This app tracks **SuperNative** (NativePHP Mobile v4) and stays on tagged,
+mutually-compatible releases so a fresh clone always builds and boots:
+
+- `nativephp/mobile` is constrained to `~4.0.0@RC` (currently `4.0.0-rc.1`).
+- `nativephp/native-ui` is **pinned to `0.1.0`** — the newest version that
+  pairs with rc.1. Newer releases (`0.2.0+`, renamed to `nativephp/mobile-ui`,
+  namespace `Native\Mobile\UI`, iOS min 18.2) require an unreleased runtime
+  and will not compile against rc.1. The pin is served through an inline
+  package repository in `composer.json`, so `composer install` works for
+  everyone with no extra setup.
+
+**When the next NativePHP Mobile release ships**, upgrading is three steps:
+
+1. `composer require nativephp/mobile:<new version>` and switch
+   `nativephp/native-ui` to the paired `nativephp/mobile-ui` release (drop the
+   inline repository entry from `composer.json`).
+2. Update the provider import in
+   [`app/Providers/NativeServiceProvider.php`](app/Providers/NativeServiceProvider.php)
+   to `Native\Mobile\UI\NativeUIServiceProvider`, and rename any `@press`
+   bindings to `@tap` if that release adopts the new event name.
+3. Delete `nativephp/android/app/src/main/java/com/nativephp/plugins/` (stale
+   copies of old plugin sources) and run `php artisan native:install --force`,
+   then `php artisan native:run`.
+
+`php artisan test` plus the CI workflow should stay green at every step.
+
 ## Contributing
 
 This app exists to demonstrate the plugin, so the most useful contributions are
