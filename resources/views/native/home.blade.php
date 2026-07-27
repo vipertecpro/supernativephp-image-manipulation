@@ -122,6 +122,22 @@
                 </row>
 
                 <row
+                    a11y-label="Remote Image"
+                    a11y-hint="Crop an image straight from a URL — the plugin downloads it natively"
+                    class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"
+                    @press="openRemoteImage"
+                >
+                    <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
+                        <icon name="globe" :size="22" class="text-theme-primary" />
+                    </column>
+                    <column class="flex-1 gap-[2]">
+                        <text class="text-base font-semibold text-theme-on-surface">Remote Image</text>
+                        <text class="text-xs text-theme-on-surface-variant">Crop straight from a URL · native download</text>
+                    </column>
+                    <icon name="chevron.right" :size="16" class="text-theme-on-surface-variant" />
+                </row>
+
+                <row
                     a11y-label="Adjust"
                     a11y-hint="Colour adjustments only, no cropping"
                     class="w-full items-center gap-4 rounded-2xl bg-theme-surface border border-theme-outline px-4 py-4"

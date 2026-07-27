@@ -4,7 +4,7 @@ A [NativePHP Mobile](https://nativephp.com/docs/mobile) demo app for the
 [`vipertecpro/image-cropper`](https://github.com/vipertecpro/image-cropper)
 plugin — a fully native, hand-written image cropper & editor for iOS and Android.
 
-The home screen is a gallery of **eight examples**, each opening the *same* plugin
+The home screen is a gallery of **nine examples**, each opening the *same* plugin
 configured differently — from a full-featured studio down to a bare, locked
 cropper — modeled on the image flows real apps use (profile avatars, cover
 banners, feed posts, stories, video thumbnails).
@@ -25,6 +25,7 @@ banners, feed posts, stories, video thumbnails).
 | **Social Post** | `presets: [square, portrait, landscape]`, `modes: ['crop','filter']` | feed post with selectable ratios + filters (Instagram-style) |
 | **Story** | `preset: story`, `presets: []`, `modes: ['crop','adjust']` | locked 9:16 vertical story/status |
 | **Video Thumbnail** | `preset: landscape`, `presets: []`, all modes, `outputSize: 1280` | 16:9 video thumbnail (YouTube-style) |
+| **Remote Image** | an `https://` URL as the source | re-crop an image already hosted on a CDN/API — the plugin downloads it natively |
 | **Adjust** | `modes: ['adjust']` | colour-adjust the whole photo, no crop |
 | **Filter** | `modes: ['filter']` | one-tap filters on the whole photo, no crop |
 

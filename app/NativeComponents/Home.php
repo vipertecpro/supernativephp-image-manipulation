@@ -37,6 +37,11 @@ class Home extends NativeComponent
         $this->navigate('/video-thumbnail');
     }
 
+    public function openRemoteImage(): void
+    {
+        $this->navigate('/remote-image');
+    }
+
     public function openAdjustPhoto(): void
     {
         $this->navigate('/adjust-photo');
