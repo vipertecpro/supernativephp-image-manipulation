@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "497c62fd2e700c031d86778aec9ca2d4",
+    "content-hash": "c0b6a963c9a4324bb3864b924c172a67",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2562,16 +2562,16 @@
         },
         {
             "name": "nativephp/mobile",
-            "version": "4.0.0-rc.1",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-air.git",
-                "reference": "f34a6a646ff89eb61a3aef7d784ac8b5beb10d73"
+                "reference": "7a9041ac3e9b095b91315377e421abf8543998c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/f34a6a646ff89eb61a3aef7d784ac8b5beb10d73",
-                "reference": "f34a6a646ff89eb61a3aef7d784ac8b5beb10d73",
+                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/7a9041ac3e9b095b91315377e421abf8543998c7",
+                "reference": "7a9041ac3e9b095b91315377e421abf8543998c7",
                 "shasum": ""
             },
             "require": {
@@ -2605,6 +2605,9 @@
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "spatie/laravel-ray": "^1.26"
+            },
+            "suggest": {
+                "ext-zip": "Required by native:install to validate and extract the downloaded Android PHP binary archives"
             },
             "type": "library",
             "extra": {
@@ -2648,9 +2651,9 @@
             ],
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-air/issues",
-                "source": "https://github.com/NativePHP/mobile-air/tree/4.0.0-rc.1"
+                "source": "https://github.com/NativePHP/mobile-air/tree/4.0.0"
             },
-            "time": "2026-07-15T15:51:17+00:00"
+            "time": "2026-07-30T02:45:28+00:00"
         },
         {
             "name": "nativephp/mobile-camera",
@@ -10664,9 +10667,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "nativephp/mobile": 5
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
