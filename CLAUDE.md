@@ -7,18 +7,11 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 ## Foundational Context
 
-This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
+This application is a Laravel application running on PHP 8.4. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package — do not assume a version.
 
-- php - 8.4
-- laravel/boost (BOOST) - v2
-- laravel/framework (LARAVEL) - v13
-- laravel/mcp (MCP) - v0
-- laravel/prompts (PROMPTS) - v0
-- laravel/pail (PAIL) - v1
-- laravel/pint (PINT) - v1
-- laravel/sail (SAIL) - v1
-- pestphp/pest (PEST) - v4
-- phpunit/phpunit (PHPUNIT) - v12
+Before relying on a package's API, confirm its installed version:
+- PHP packages: run `composer show --direct` to list direct dependencies with versions, or `composer show <vendor/package>` for a single package.
+- JS packages: check `package.json` for the installed versions.
 
 ## Skills Activation
 
@@ -77,6 +70,11 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 3. Combine words and phrases for mixed queries: `middleware "rate limit"`.
 4. Use multiple queries for OR logic: `queries=["authentication", "middleware"]`.
 
+## Project Rules
+
+- This project keeps committed, area-grouped rules in `.ai/rules` (settled decisions, non-obvious traps, standing constraints). Framework and package guidelines that only apply to specific paths (testing, frontend, components) also live there, under `.ai/rules/boost` — this is not just recorded decisions, it is load-bearing guidance you have not seen inline. Before you enter plan mode or create/edit any file, you MUST first: open @.ai/rules/index.md (it maps file globs to rule files), read every rule file whose globs cover the path(s) in scope, and run `grep -rin 'keyword' .ai/rules` to catch what a path match alone misses. Do not write code until you have read and are following every matching rule.
+- Record durable rules with `record-rule` so the next agent or teammate inherits them instead of working them out again. Pass a `glob` (e.g. `app/Http/Controllers/**`), a short `title`, and a few-line `note`. Always use `record-rule`, never your native memory or notes tool — native memory is personal and session-scoped; only `.ai/rules` is shared with the team and persists in the repo.
+
 ## Artisan
 
 - Run Artisan commands directly via the command line (e.g., `php artisan route:list`). Use `php artisan list` to discover available commands and `php artisan [command] --help` to check parameters.
@@ -105,6 +103,20 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 # Deployment
 
 - Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
+
+=== herd rules ===
+
+# Laravel Herd
+
+- The application is served by Laravel Herd at `https?://[kebab-case-project-dir].test`. Use the `get-absolute-url` tool to generate valid URLs. Never run commands to serve the site. It is always available.
+- Use the `herd` CLI to manage services, PHP versions, and sites (e.g. `herd sites`, `herd services:start <service>`, `herd php:list`). Run `herd list` to discover all available commands.
+
+=== tests rules ===
+
+# Test Enforcement
+
+- Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
+- Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
 
 === laravel/core rules ===
 
@@ -152,7 +164,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Run tests: `php artisan test --compact` or filter: `php artisan test --compact --filter=testName`.
 - Do NOT delete tests without approval.
 
-=== nativephp/mobile rules ===
+=== nativephp/mobile/core rules ===
 
 ## NativePHP Mobile
 
@@ -175,12 +187,54 @@ elements (`native:column`, `native:text`, `native:button`, …).** This is the w
   `nativephp-webview-to-native` skill).
 - Style EDGE elements with Tailwind utility classes via `class="..."` / `:class="..."` only — never inline
   CSS `style="..."` attributes or ad-hoc styling props.
+- Compose screens from **nested child components**: any `NativeComponent` under `app/NativeComponents` mounts
+  as a tag (`UserCard` → `<native:user-card :user="$u" key="user-{{ $u->id }}" @saved="onSaved" />`) with live
+  props, its own persistent state, and `emit()` events bubbling to `@event` tag bindings / `#[On('event')]`
+  listeners. Prefer extracting a reusable child component over duplicating Blade across screens; give list
+  children a stable domain `key` (never the loop index).
 - Use `native:icon` (SF Symbols on iOS, Material Icons on Android) for iconography — never emoji characters in
   UI text, labels, or buttons, unless the user explicitly asks for emojis. Prefer the typed icon enums
   (`App\Icons\Ios`, `App\Icons\Android`, `App\Icons\AndroidOutlined`) bound via the `:ios` / `:android`
   attributes, e.g. `:ios="Ios::Gearshape" :android="Android::Settings"`, importing each enum into the view with
   Blade's use directive first. The enums are generated, not shipped — if `app/Icons/` doesn't exist yet, run
   `php artisan native-ui:generate-icons` first (safe to run yourself).
+
+### Theme Tokens, Font Aliases, and Layouts — the Design System Trio
+
+Every app's visual identity belongs in `config/native-ui.php` (publish with
+`php artisan vendor:publish --tag=native-ui-config`), not scattered through the markup. When building or
+reviewing screens, enforce all three:
+
+1. **Theme tokens over hardcoded colors.** Define the palette once in the config's `theme` block, then style
+   with `bg-theme-*` / `text-theme-*` / `border-theme-*` classes (`bg-theme-surface`, `text-theme-on-surface`,
+   `border-theme-outline`). Never sprinkle `bg-[#1E2021]`-style arbitrary values for what is really a theme
+   role — they can't be re-skinned and don't get automatic dark-mode pairs. Arbitrary color values are for
+   genuine data-driven color (per-category identity colors, map imagery, chart series), and those belong in
+   one PHP home (an enum or model method), never inline per view. Two capabilities that prevent hex fallbacks:
+   - **The token map is open-ended.** When a design needs a role the shipped set lacks (a success green, an
+     `outline-variant`), add it to both `light` and `dark` blocks — `bg-theme-success` works immediately; no
+     package change required.
+   - **Theme classes take opacity modifiers** just like palette classes: `bg-theme-primary/15` is the correct
+     tonal-fill idiom (applies to the dark companion too) — never approximate with a hardcoded alpha hex.
+2. **Font aliases over file tokens.** Register semantic aliases in the config's `fonts` array
+   (`'headline' => 'ArchivoNarrow-Bold'`, `'mono' => 'JetBrainsMono-Regular'`, `'default' => …` for the
+   app-wide font) and write `font="headline"` in views — never `font="ArchivoNarrow-Bold"`. Swapping a
+   typeface must be a one-line config change.
+3. **Native chrome via composable chrome elements (layouts optional).** Author nav bars, tab bars, fabs, and
+   side navs directly in the screen's Blade — `<native:top-bar>` (+ `top-bar-action`), `<native:bottom-nav>`
+   (+ `bottom-nav-item`), `<native:fab>`, `<native:bottom-bar>`, `<native:side-nav>`. They hoist onto the real
+   NavigationStack/TabView chrome (edge-swipe back, predictive back, large titles, Liquid Glass/Material You),
+   and their attributes are Blade expressions over screen state, so badges/subtitles/icons are reactive. A
+   `NativeLayout` (attached via `Route::native(...)->layout(...)` or `Route::nativeGroup(...)`) is **optional**
+   — reach for one only when many screens share identical chrome (e.g. one tabs layout for a tab section); an
+   inline chrome element on a screen always overrides the layout's bar for that slot. Add the `custom`
+   attribute to a chrome tag only for designs the system bars genuinely can't express — it renders in-tree as
+   an ordinary drawn element. Never hand-roll top bars or bottom navs out of rows and pressables — that
+   forfeits native back gestures, safe-area handling, and Liquid Glass/Material You. Chrome colors take theme
+   tokens (inline: theme classes / `theme()`-fed attributes; builders: `->activeColor(theme('primary'))`) —
+   never pasted hex. Bar icons take the platform enums via `:ios-icon` / `:android-icon` with a plain `icon`
+   string as cross-platform fallback; bar fonts take config aliases (`font="mono"` / `->font('mono')`). Only
+   screens rendered without any chrome (no layout AND no inline bars) may use `safe-area` classes.
 
 ### When a Capability Is Missing
 
@@ -243,84 +297,159 @@ ask: "Which platform do you want to build/test on — iOS or Android?" Never ass
 When the platform is confirmed, give the relevant command(s) above and tell the user to run it in their terminal.
 Do not run it yourself.
 
-=== nativephp/mobile-browser rules ===
+=== nativephp/mobile-camera/core rules ===
 
-## nativephp/browser
+## nativephp/camera
 
-Open URLs in system browser, in-app browser, and OAuth authentication sessions.
+Camera plugin for NativePHP Mobile providing photo capture, video recording, and gallery picker functionality.
 
 ### PHP Usage (Livewire/Blade)
 
-Use the `Browser` facade:
+<code-snippet name="Taking Photos" lang="php">
+use Native\Mobile\Facades\Camera;
 
-<code-snippet name="Using Browser Facade" lang="php">
-use Native\Mobile\Facades\Browser;
+// Take a photo
+Camera::getPhoto();
+</code-snippet>
 
-// Open in in-app browser (keeps users in your app)
-Browser::inApp('https://nativephp.com/mobile');
+<code-snippet name="Recording Videos" lang="php">
+use Native\Mobile\Facades\Camera;
 
-// Open in system browser (leaves your app)
-Browser::open('https://nativephp.com/mobile');
+// Using fluent API
+Camera::recordVideo()
+    ->maxDuration(60)
+    ->id('my-video-123')
+    ->start();
+</code-snippet>
 
-// OAuth authentication with automatic redirect handling
-Browser::auth('https://provider.com/oauth/authorize?client_id=123&redirect_uri=nativephp://127.0.0.1/auth/callback');
+<code-snippet name="Picking Media from Gallery" lang="php">
+use Native\Mobile\Facades\Camera;
+
+// Pick multiple images
+Camera::pickImages('images', true);
+
+// Pick any media type
+Camera::pickImages('all', true);
 </code-snippet>
 
 ### JavaScript Usage (Vue/React/Inertia)
 
-<code-snippet name="Using Browser in JavaScript" lang="javascript">
-import { browser } from '#nativephp';
+<code-snippet name="Camera in JavaScript" lang="javascript">
+import { camera } from '#nativephp';
 
-// Open in in-app browser
-await browser.inApp('https://nativephp.com/mobile');
+// Take a photo with identifier
+await camera.getPhoto().id('profile-pic');
 
-// Open in system browser
-await browser.open('https://nativephp.com/mobile');
+// Record video with max duration
+await camera.recordVideo()
+    .maxDuration(30)
+    .id('my-video-123');
 
-// OAuth authentication
-await browser.auth('https://provider.com/oauth/authorize?client_id=123&redirect_uri=nativephp://127.0.0.1/auth/callback');
+// Pick multiple images from gallery
+await camera.pickImages()
+    .images()
+    .multiple()
+    .maxItems(5);
 </code-snippet>
 
-### Methods
+### Handling Camera Events
 
-- `Browser::inApp(string $url)` - Opens in embedded browser (SFSafariViewController/Chrome Custom Tabs)
-- `Browser::open(string $url)` - Opens in device's default browser
-- `Browser::auth(string $url)` - Opens OAuth authentication browser with automatic redirect handling
+#### PHP
 
-### When to Use Each Method
+<code-snippet name="Photo Events" lang="php">
+use Native\Mobile\Attributes\OnNative;
+use Native\Mobile\Events\Camera\PhotoTaken;
 
-- **`inApp()`**: Keep users within your app for documentation, help pages, or related content
-- **`open()`**: Use when full browser features are required for complex web applications
-- **`auth()`**: Implement OAuth authentication flows with secure, automatic redirect handling
+#[OnNative(PhotoTaken::class)]
+public function handlePhotoTaken(string $path)
+{
+    $this->processPhoto($path);
+}
+</code-snippet>
 
-=== nativephp/native-ui rules ===
+<code-snippet name="Video Events" lang="php">
+use Native\Mobile\Attributes\OnNative;
+use Native\Mobile\Events\Camera\VideoRecorded;
 
-## nativephp/native-ui
+#[OnNative(VideoRecorded::class)]
+public function handleVideoRecorded(string $path, string $mimeType, ?string $id = null)
+{
+    $this->processVideo($path);
+}
+</code-snippet>
+
+<code-snippet name="Gallery Events" lang="php">
+use Native\Mobile\Attributes\OnNative;
+use Native\Mobile\Events\Gallery\MediaSelected;
+
+#[OnNative(MediaSelected::class)]
+public function handleMediaSelected(array $media)
+{
+    foreach ($media as $file) {
+        $this->processMedia($file);
+    }
+}
+</code-snippet>
+
+### Events
+
+- `Native\Mobile\Events\Camera\PhotoTaken` - Photo captured (payload: `string $path`)
+- `Native\Mobile\Events\Camera\VideoRecorded` - Video recorded (payload: `string $path`, `string $mimeType`, `?string $id`)
+- `Native\Mobile\Events\Camera\VideoCancelled` - Recording cancelled
+- `Native\Mobile\Events\Gallery\MediaSelected` - Media selected (payload: `array $media`)
+
+### Storage Locations
+
+- **Photos (Android):** `{cache}/captured.jpg`
+- **Photos (iOS):** `~/Library/Application Support/Photos/captured.jpg`
+- **Videos (Android):** `{cache}/video_{timestamp}.mp4`
+- **Videos (iOS):** `~/Library/Application Support/Videos/captured_video_{timestamp}.mp4`
+
+=== nativephp/mobile-ui/core rules ===
+
+## nativephp/mobile-ui
 
 Native UI components for NativePHP Mobile. Every element renders as a real
 platform primitive — Material3 on Android, SwiftUI on iOS — not a webview
 widget. Elements are declared in Blade with `<native:*>` tags or built
-programmatically with the fluent `Nativephp\NativeUi\Elements\*` API; both
+programmatically with the fluent `Native\Mobile\UI\Elements\*` API; both
 paths serialize to the same wire tree.
 
 ### Core rules
 
 - Visual styling is theme-driven ("Model 3"): buttons, inputs, toggles, and
   other controls take their colors, radii, and typography from the theme
-  (`Nativephp\NativeUi\Theme`). Use semantic props like `variant="primary"`
+  (`Native\Mobile\UI\Theme`). Use semantic props like `variant="primary"`
   instead of per-instance colors — per-instance visual overrides on these
   controls are intentionally ignored.
 - Bind state with `native:model="property"` (works on toggle, checkbox, chip,
   slider, select, radio-group, button-group, tab-row, and the text inputs).
   Use `.live` / `.blur` / `.debounce.Xms` modifiers to control sync frequency.
-- Wire callbacks with event attributes (`@press`, `@change`, `@submit`,
+- Wire callbacks with event attributes (`@tap`, `@change`, `@submit`,
   `@dismiss`) pointing at public methods on the component.
+- `<native:date-picker>` handles dates, times, and both. Set `mode` to
+  `date` (default), `time`, or `datetime`. Values are always wall-clock ISO
+  strings — `2026-07-25`, `14:30`, `2026-07-25T14:30` — never offsets or
+  epoch numbers, so they feed straight into `Carbon::parse()`. `value`,
+  `min`, and `max` also accept any `DateTimeInterface`.
+- On the picker, `timezone` (IANA) names the calendar the user picks in and
+  never rewrites the value; `locale` (BCP-47) is display-only. Use
+  `picker-style` = `compact` (default) / `inline` / `wheel` (NOT `display`,
+  which is flex/layout display). `title`,
+  `confirm-label`, and `cancel-label` are Android-only dialog chrome — pass
+  translated strings. `min`/`max` are NOT supported for `mode="time"` (they
+  throw), and sync-mode modifiers (`native:model.blur`) throw too — a picker
+  always commits on selection.
+- In tests, drive pickers with the `pickDate()` / `pickTime()` /
+  `pickDateTime()` / `clearPicker()` macros and assert with
+  `assertPicker()` / `assertPickerValue()` / `assertPickerEmpty()`.
 
 <code-snippet name="Declaring native elements in Blade" lang="blade">
 <native:column class="gap-4 p-4">
     <native:outlined-text-input label="Email" native:model.blur="email" />
+    <native:date-picker label="Starts" mode="datetime" native:model="startsAt" />
     <native:toggle label="Notifications" native:model="notify" />
-    <native:button variant="primary" @press="save">Save</native:button>
+    <native:button variant="primary" @tap="save">Save</native:button>
 </native:column>
 </code-snippet>
 
@@ -339,6 +468,20 @@ paths serialize to the same wire tree.
   and `bg-theme-*` / `text-theme-*` / `border-theme-*` classes emit both
   modes automatically. This works for Blade-declared AND programmatically
   built elements (`Element->class()`).
+- The theme token map is open-ended: add any semantic role your design
+  needs (`success`, `warning`, `outline-variant`, …) to both `light` and
+  `dark` blocks and the matching `*-theme-*` classes resolve immediately —
+  never fall back to hardcoded hex for a missing role.
+- `success`/`on-success` and `outline-variant` are first-class tokens: the
+  native theme stores parse them (with fallbacks), and `variant="success"`
+  works on `<native:button>` and `<native:badge>` for confirm / "safe to
+  proceed" actions — prefer it over green hex or misusing `primary`.
+- Theme classes accept opacity modifiers like every other color class:
+  `bg-theme-primary/15` is the tonal-fill idiom (alpha applies to the dark
+  companion too).
+- In PHP — layout chrome builders (`->activeColor()`, `->backgroundColor()`),
+  dynamic styling — read tokens with the appearance-aware `theme()` helper
+  (`theme('primary')`) instead of raw `config()` paths or pasted hex.
 - Disabled controls use the `surface-variant` (fill) + `on-surface-variant`
   (label) tokens on both platforms — tune disabled contrast by adjusting
   those two tokens, not per-component.
@@ -371,10 +514,13 @@ paths serialize to the same wire tree.
 - **Downloading fonts.** `php artisan native:font Lobster` (or `"Rock Salt"`,
   multiple families, `--weights=400,700`, `--italic`) downloads Google Fonts
   into `resources/fonts/` with ready-to-use token names — no API key.
-- **App-wide default font.** Set the theme's `font-family` token in
-  `config/native-ui.php` to a bundled token (e.g. `'Inter-Regular'`) to apply
-  it everywhere; per-element `font` attributes and `font-serif`/`font-mono`
-  classes still win. `native:font --default` sets it for you.
+- **Font aliases + app-wide default.** Name fonts semantically in
+  `config/native-ui.php`: `'fonts' => ['default' => 'Inter-Regular',
+  'accent' => 'DynaPuff-Regular']`. Use an alias anywhere a font token works
+  (`font="accent"`, chrome `->font()`, layout `$font`); the `default` alias
+  applies app-wide (superseding the older `font-family` token). Per-element
+  `font` attributes and `font-serif`/`font-mono` classes still win over the
+  default. `native:font --default` sets it for you.
 - **Line height (leading).** `leading-none|tight|snug|normal|relaxed|loose`
   (unitless multipliers of the font size), plus arbitrary `leading-[1.4]`
   (multiplier) and `leading-[24px]` (absolute). Applies to `<native:text>` and
@@ -416,13 +562,13 @@ Android). Both are also available fluently as `->a11yLabel()` / `->a11yHint()`.
   automatically — don't hardcode layouts that break at larger type sizes.
 
 <code-snippet name="Accessible icon-only controls" lang="blade">
-<native:button icon="trash" a11y-label="Delete draft" a11y-hint="Deletes the draft permanently" @press="deleteDraft" />
+<native:button icon="trash" a11y-label="Delete draft" a11y-hint="Deletes the draft permanently" @tap="deleteDraft" />
 <native:icon name="checkmark.seal" a11y-label="Verified" />
 <native:list-item headline="Team meeting" trailingIconButton="ellipsis" trailing-a11y-label="More options" />
 </code-snippet>
 
 <code-snippet name="Fluent a11y API" lang="php">
-use Nativephp\NativeUi\Elements\Button;
+use Native\Mobile\UI\Elements\Button;
 
 Button::make()
     ->icon('plus')
@@ -430,5 +576,159 @@ Button::make()
     ->a11yHint('Adds a new item to the list')
     ->onPress('addItem');
 </code-snippet>
+
+=== vipertecpro/image-cropper/core rules ===
+
+## vipertecpro/image-cropper
+
+A NativePHP Mobile plugin that opens a **fully native** image crop & edit screen
+(SwiftUI on iOS, Jetpack Compose on Android) and returns a **new cropped file**
+to PHP via an event. Works with NativePHP Mobile v3 and v4.
+
+### What it does / does not do
+
+- It edits an existing image — it does NOT capture or pick photos. Feed it a
+  local file path (a bundled asset, a download, or the result of a
+  camera/gallery picker such as `nativephp/mobile-camera`) **or an http(s)
+  URL** — remote images are downloaded natively (themed loading screen with
+  Cancel) before the editor opens.
+- Input: one absolute file path or URL. Output: a brand-new cropped JPEG (or a
+  transparent PNG for circle crops) — the source is never modified.
+- Only croppable formats are accepted (jpg, jpeg, png, gif, webp, bmp, heic,
+  heif, avif). Other extensions throw `InvalidArgumentException` immediately;
+  content that doesn't actually decode as an image (or a failed download)
+  fires `CropCancelled`.
+- The call is fire-and-forget: `open()` returns `void`; the result arrives later
+  as an event.
+
+### The one method
+
+`ImageCropper::open(string $path, array $options = []): void`
+
+`$options` keys (all optional):
+
+- `preset`: `profile` (circle 1:1), `square`, `portrait`, `landscape` (16:9), `cover`, `banner`, `story`. Sets shape + aspect ratio.
+- `shape`: `circle` | `rect` — overrides the preset's shape.
+- `aspectRatio`: float, width / height, e.g. `16/9` — overrides the preset's ratio.
+- `tools`: subset of `['zoom', 'rotate']` — which crop fine-tune rulers show.
+- `modes`: subset of `['crop', 'adjust', 'filter']` — which editor modes are offered; the editor opens on the first. Omit `crop` to edit the whole photo with no crop frame.
+- `presets`: list of preset keys offered in the in-screen selector; `[]` hides it and locks the crop shape.
+- `outputSize`: int, longest edge of the output in px (default `1024`).
+- `theme`: hex colors so the editor matches the HOST APP's look instead of its own — keys `background`, `text`, `accent` (Done button), `highlight` (active states). All optional; omitted keys keep the plugin's system-adaptive light/dark default. Identical rendering on iOS and Android.
+- `id`: string echoed back on the result event, to correlate concurrent crops.
+
+### Usage (SuperNative / NativeComponent)
+
+Call the facade from a `NativeComponent`, then handle the result with `#[On]`.
+
+<code-snippet name="Crop a profile avatar in a NativeComponent" lang="php">
+use Native\Mobile\Attributes\On;
+use Native\Mobile\Edge\NativeComponent;
+use Vipertecpro\ImageCropper\Events\CropCancelled;
+use Vipertecpro\ImageCropper\Events\ImageCropped;
+use Vipertecpro\ImageCropper\Facades\ImageCropper;
+
+class Avatar extends NativeComponent
+{
+    public ?string $photo = null;    // an existing image path
+    public ?string $cropped = null;
+
+    public function crop(): void
+    {
+        ImageCropper::open($this->photo, ['preset' => 'profile']);
+    }
+
+    #[On(ImageCropped::class)]
+    public function onCropped(string $path): void
+    {
+        $this->cropped = $path;      // a new cropped file on disk
+    }
+
+    #[On(CropCancelled::class)]
+    public function onCancelled(): void
+    {
+        // user backed out — nothing produced
+    }
+}
+</code-snippet>
+
+### Events
+
+Both events live under `Vipertecpro\ImageCropper\Events`. Listen with the
+`#[On(EventClass::class)]` attribute on a `NativeComponent` method.
+
+- `ImageCropped` — payload `string $path`, `?string $id`. Fired when the user taps Done; `$path` is the new cropped file.
+- `CropCancelled` — payload `?string $id`. Fired when the user cancels or the source could not be read.
+
+On NativePHP Mobile **v3**, use `#[OnNative(...)]` (from
+`Native\Mobile\Attributes\OnNative`) instead of `#[On]` — the `#[On]` attribute
+is v4-only. The plugin itself is unchanged across v3 and v4.
+
+### Common configurations
+
+<code-snippet name="Configuring the crop editor" lang="php">
+// Round avatar, locked — no preset switching, crop only (no adjust/filter):
+ImageCropper::open($path, ['preset' => 'profile', 'presets' => [], 'modes' => ['crop']]);
+
+// Wide cover/banner:
+ImageCropper::open($path, ['preset' => 'cover']);
+
+// Fixed 3:1 rect, only the zoom ruler:
+ImageCropper::open($path, ['shape' => 'rect', 'aspectRatio' => 3.0, 'tools' => ['zoom']]);
+
+// No crop at all — colour-adjust the whole photo and export it full-size:
+ImageCropper::open($path, ['modes' => ['adjust']]);
+
+// One-tap filters only, whole photo:
+ImageCropper::open($path, ['modes' => ['filter']]);
+
+// Match the host app's theme (pass your app's own colors):
+ImageCropper::open($path, [
+    'theme' => ['background' => '#121417', 'text' => '#FFFFFF', 'accent' => '#C2410C', 'highlight' => '#C2410C'],
+]);
+</code-snippet>
+
+### Getting an image path (optional camera/gallery)
+
+The plugin has no hard dependency on a picker. If you need one,
+`nativephp/mobile-camera` is convenient — install and register it separately,
+then hand its result path to `ImageCropper::open()`.
+
+<code-snippet name="Pick then crop" lang="php">
+use Native\Mobile\Facades\Camera;
+
+Camera::pickImages('images', false);   // fires MediaSelected -> $files[0]
+// then, in your MediaSelected handler:
+ImageCropper::open($files[0], ['preset' => 'profile']);
+</code-snippet>
+
+### Installation & registration
+
+Requiring with Composer is not enough — the plugin must be registered, or it does
+nothing. Then rebuild so the native code compiles in.
+
+<code-snippet name="Install & register the plugin" lang="bash">
+composer require vipertecpro/image-cropper
+php artisan vendor:publish --tag=nativephp-plugins-provider   # once per app
+
+php artisan native:plugin:register vipertecpro/image-cropper
+php artisan native:plugin:list      # verify "ImageCropper" + "ImageCropper.Open" appear
+
+php artisan native:run ios          # or: android  — rebuild to compile native code
+
+</code-snippet>
+
+### Displaying the result
+
+<code-snippet name="Show a cropped avatar" lang="blade">
+<native:image :src="$cropped" :fit="2" class="w-[96] h-[96] rounded-full" />
+</code-snippet>
+
+### Legacy web-view apps
+
+A JS bridge is shipped at `resources/js/imageCropper.js`. Because the result is
+async, subscribe to the native events with the `#nativephp` `On()` helper — see
+the file header for an example. For SuperNative/native apps, prefer the
+`NativeComponent` + `#[On]` approach above.
 
 </laravel-boost-guidelines>

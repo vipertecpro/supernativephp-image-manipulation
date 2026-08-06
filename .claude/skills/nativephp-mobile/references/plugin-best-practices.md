@@ -36,12 +36,18 @@ Plugins can leverage:
 ```
 my-plugin/
 ├── composer.json                  # type must be "nativephp-plugin"
+
 ├── nativephp.json                 # central manifest
+
 ├── src/                           # PHP classes, facades, events, service provider
+
 ├── resources/
 │   ├── android/src/               # Kotlin bridge functions
+
 │   ├── ios/Sources/               # Swift bridge functions
+
 │   └── js/                        # JavaScript library stubs
+
 ```
 
 Scaffold a plugin with: `php artisan native:plugin:create`
@@ -106,13 +112,12 @@ Consider publishing as an npm package with TypeScript definitions.
 ## Typical Usage Pattern
 
 ```php
-use Native\Mobile\Attributes\On;
 use Vendor\MyPlugin\Facades\MyPlugin;
 
 MyPlugin::doSomething(); // Call native functions
 
-#[On(MyPlugin\Events\SomethingHappened::class)]
-public function handleResult($data) { } // Listen for events (NativeComponent / v4)
+#[OnNative(MyPlugin\Events\SomethingHappened::class)]
+public function handleResult($data) { } // Listen for events
 ```
 
 ## Requirements

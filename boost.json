@@ -8,14 +8,17 @@
     "nightwatch": false,
     "packages": [
         "nativephp/mobile",
-        "nativephp/native-ui",
-        "nativephp/mobile-camera"
+        "nativephp/mobile-camera",
+        "nativephp/mobile-ui",
+        "vipertecpro/image-cropper"
     ],
     "sail": false,
     "skills": [
+        "infer-conventions",
         "laravel-best-practices",
         "pest-testing",
         "nativephp-mobile",
+        "nativephp-v3-to-v4-upgrade",
         "nativephp-webview-to-native"
     ]
 }
