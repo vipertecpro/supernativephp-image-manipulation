@@ -77,30 +77,27 @@ php artisan test
 
 ## Stability & upgrading
 
-This app tracks **SuperNative** (NativePHP Mobile v4) and stays on tagged,
-mutually-compatible releases so a fresh clone always builds and boots:
+This app tracks **SuperNative** (NativePHP Mobile v4) on stable, published
+releases. Every dependency resolves from Packagist or the `nativephp-plugins`
+composer repo — **no inline package pins** — so a fresh clone just works:
 
-- `nativephp/mobile` is on stable `^4.0` (currently `4.0.1`).
-- `nativephp/native-ui` is **pinned to `0.1.0`** — the version compatible with
-  the current 4.0.x runtime. Newer releases (`0.2.0+`, renamed to
-  `nativephp/mobile-ui`, namespace `Native\Mobile\UI`, iOS min 18.2) target a
-  newer runtime. The pin is served through an inline package repository in
-  `composer.json`, so `composer install` works for everyone with no extra setup.
+- `nativephp/mobile` — `^4.0` (currently `4.0.1`)
+- `nativephp/mobile-ui` — `^0.3` (theme + native UI components, namespace
+  `Native\Mobile\UI`). **Requires iOS 18.2+.**
+- `nativephp/mobile-camera` — `^1.0`
+- `vipertecpro/image-cropper` — `^1.0`
 
-**When the next NativePHP Mobile release ships**, upgrading is three steps:
+Two GitHub Actions keep it healthy: `update-dependencies.yml` runs
+`composer update` daily and commits any lockfile changes, and `tests.yml` runs
+the suite on PHP 8.4 for every push.
 
-1. `composer require nativephp/mobile:<new version>` and switch
-   `nativephp/native-ui` to the paired `nativephp/mobile-ui` release (drop the
-   inline repository entry from `composer.json`).
-2. Update the provider import in
-   [`app/Providers/NativeServiceProvider.php`](app/Providers/NativeServiceProvider.php)
-   to `Native\Mobile\UI\NativeUIServiceProvider`, and rename any `@press`
-   bindings to `@tap` if that release adopts the new event name.
-3. Delete `nativephp/android/app/src/main/java/com/nativephp/plugins/` (stale
-   copies of old plugin sources) and run `php artisan native:install --force`,
-   then `php artisan native:run`.
+After changing native dependencies, rebuild the native shell:
 
-`php artisan test` plus the CI workflow should stay green at every step.
+```bash
+rm -rf nativephp
+php artisan native:install --force
+php artisan native:run ios      # or: android
+```
 
 ## Contributing
 
