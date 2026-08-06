@@ -55,8 +55,10 @@ copy on device by default, with a fully-commented `Http` upload ready to enable.
 
 ## Running it
 
-**Requirements:** PHP 8.4 and [NativePHP Mobile](https://nativephp.com/docs/mobile/4/getting-started/installation)
-set up (Xcode for iOS, Android Studio for Android).
+**Requirements:** PHP 8.4, [NativePHP Mobile](https://nativephp.com/docs/mobile/4/getting-started/installation)
+set up (Xcode for iOS, Android Studio for Android), and — because of
+`nativephp/mobile-ui` — **iOS 18.2+** / **Android API 26+** on the simulator or
+device you target.
 
 ```bash
 git clone https://github.com/vipertecpro/supernativephp-image-manipulation
