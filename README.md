@@ -13,7 +13,7 @@ banners, feed posts, stories, video thumbnails).
 
 [![Watch the demo](art/demo-poster.png)](art/demo.mp4)
 
-▶️ **[Watch the full demo](art/demo.mp4)** — a walkthrough of the five examples on iOS.
+▶️ **[Watch the full demo](art/demo.mp4)** — a walkthrough of the examples on iOS.
 
 ## The examples
 
@@ -80,13 +80,12 @@ php artisan test
 This app tracks **SuperNative** (NativePHP Mobile v4) and stays on tagged,
 mutually-compatible releases so a fresh clone always builds and boots:
 
-- `nativephp/mobile` is constrained to `~4.0.0@RC` (currently `4.0.0-rc.1`).
-- `nativephp/native-ui` is **pinned to `0.1.0`** — the newest version that
-  pairs with rc.1. Newer releases (`0.2.0+`, renamed to `nativephp/mobile-ui`,
-  namespace `Native\Mobile\UI`, iOS min 18.2) require an unreleased runtime
-  and will not compile against rc.1. The pin is served through an inline
-  package repository in `composer.json`, so `composer install` works for
-  everyone with no extra setup.
+- `nativephp/mobile` is on stable `^4.0` (currently `4.0.1`).
+- `nativephp/native-ui` is **pinned to `0.1.0`** — the version compatible with
+  the current 4.0.x runtime. Newer releases (`0.2.0+`, renamed to
+  `nativephp/mobile-ui`, namespace `Native\Mobile\UI`, iOS min 18.2) target a
+  newer runtime. The pin is served through an inline package repository in
+  `composer.json`, so `composer install` works for everyone with no extra setup.
 
 **When the next NativePHP Mobile release ships**, upgrading is three steps:
 
