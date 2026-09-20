@@ -2648,16 +2648,16 @@
         },
         {
             "name": "nativephp/mobile",
-            "version": "4.5.0",
+            "version": "4.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-air.git",
-                "reference": "8a971ec8adca0a900798043995fec9571ac093ce"
+                "reference": "19e421ba591d6dda1a2ea7cb220b61329d4b2614"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/8a971ec8adca0a900798043995fec9571ac093ce",
-                "reference": "8a971ec8adca0a900798043995fec9571ac093ce",
+                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/19e421ba591d6dda1a2ea7cb220b61329d4b2614",
+                "reference": "19e421ba591d6dda1a2ea7cb220b61329d4b2614",
                 "shasum": ""
             },
             "require": {
@@ -2739,9 +2739,9 @@
             ],
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-air/issues",
-                "source": "https://github.com/NativePHP/mobile-air/tree/4.5.0"
+                "source": "https://github.com/NativePHP/mobile-air/tree/4.5.1"
             },
-            "time": "2026-09-18T17:10:23+00:00"
+            "time": "2026-09-19T15:03:37+00:00"
         },
         {
             "name": "nativephp/mobile-camera",
