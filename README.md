@@ -83,11 +83,11 @@ This app tracks **SuperNative** (NativePHP Mobile v4) on stable, published
 releases. Every dependency resolves from Packagist or the `nativephp-plugins`
 composer repo — **no inline package pins** — so a fresh clone just works:
 
-- `nativephp/mobile` — `^4.0` (currently `4.0.1`)
-- `nativephp/mobile-ui` — `^0.3` (theme + native UI components, namespace
-  `Native\Mobile\UI`). **Requires iOS 18.2+.**
+- `nativephp/mobile` — `^4.6` (currently `4.6.0`)
+- `nativephp/mobile-ui` — `^0.7` or `^0.8` (theme + native UI components,
+  namespace `Native\Mobile\UI`). **Requires iOS 18.2+.**
 - `nativephp/mobile-camera` — `^1.0`
-- `vipertecpro/image-cropper` — `^1.0`
+- `vipertecpro/image-cropper` — `^1.3.1`
 
 Two GitHub Actions keep it healthy: `update-dependencies.yml` runs
 `composer update` daily and commits any lockfile changes, and `tests.yml` runs

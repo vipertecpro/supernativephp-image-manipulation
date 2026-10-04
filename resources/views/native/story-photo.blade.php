@@ -22,7 +22,7 @@
             </column>
         @else
             <column class="w-[220] h-[390] rounded-2xl items-center justify-center bg-white/5 border-2 border-white/15">
-                <icon name="rectangle.portrait" :size="80" class="text-white/25" />
+                <icon name="iphone" :size="80" class="text-white/25" />
             </column>
         @endif
 

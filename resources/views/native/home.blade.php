@@ -96,7 +96,7 @@
                     @press="openStoryPhoto"
                 >
                     <column class="w-[44] h-[44] rounded-xl items-center justify-center bg-theme-surface-variant">
-                        <icon name="rectangle.portrait" :size="22" class="text-theme-primary" />
+                        <icon name="iphone" :size="22" class="text-theme-primary" />
                     </column>
                     <column class="flex-1 gap-[2]">
                         <text class="text-base font-semibold text-theme-on-surface">Story</text>

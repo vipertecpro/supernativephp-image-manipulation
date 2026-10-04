@@ -32,13 +32,18 @@
         {{-- URL input — bound live to $imageUrl; return key starts the crop --}}
         <column class="w-full gap-2 px-1">
             <text class="text-xs text-white/50 px-1">Image URL</text>
-            <outlined-text-input
-                native:model.debounce.400ms="imageUrl"
-                placeholder="https://example.com/photo.jpg"
-                keyboard="url"
-                @submit="startEdit"
-                class="w-full"
-            />
+            {{-- Bare, not outlined: the outlined input takes its text colour from
+                 the app theme, which is light, so on this dark screen the URL
+                 was dark grey on near-black. The bare one takes a colour. --}}
+            <column class="w-full rounded-xl border border-white/30 px-3 py-3">
+                <bare-text-input
+                    native:model.debounce.400ms="imageUrl"
+                    placeholder="https://example.com/photo.jpg"
+                    keyboard="url"
+                    @submit="startEdit"
+                    class="w-full text-white"
+                />
+            </column>
             <text class="text-xs text-white/35 px-1">
                 Croppable formats only — try a .pdf URL to see the validation toast.
             </text>
