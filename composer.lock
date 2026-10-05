@@ -197,16 +197,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "f7a296f4c4cf8cb8bb83e35d6951a406bb11afa5"
+                "reference": "528948210cc46f967a4b98e83b19e76f2b504993"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/f7a296f4c4cf8cb8bb83e35d6951a406bb11afa5",
-                "reference": "f7a296f4c4cf8cb8bb83e35d6951a406bb11afa5",
+                "url": "https://api.github.com/repos/composer/semver/zipball/528948210cc46f967a4b98e83b19e76f2b504993",
+                "reference": "528948210cc46f967a4b98e83b19e76f2b504993",
                 "shasum": ""
             },
             "require": {
@@ -258,7 +258,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.5.0"
+                "source": "https://github.com/composer/semver/tree/3.5.1"
             },
             "funding": [
                 {
@@ -270,7 +270,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-24T14:38:51+00:00"
+            "time": "2026-10-05T13:12:12+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -1361,16 +1361,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v2.10.1",
+            "version": "v2.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "3e7bab5c7c80b6d2764ef3db1e3eb801204da84e"
+                "reference": "2379e52b09bbdd2e72a5bf392891449be2f9f906"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/3e7bab5c7c80b6d2764ef3db1e3eb801204da84e",
-                "reference": "3e7bab5c7c80b6d2764ef3db1e3eb801204da84e",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/2379e52b09bbdd2e72a5bf392891449be2f9f906",
+                "reference": "2379e52b09bbdd2e72a5bf392891449be2f9f906",
                 "shasum": ""
             },
             "require": {
@@ -1385,6 +1385,7 @@
                 "php": "^8.2"
             },
             "require-dev": {
+                "jasonmccreary/double": "^1.0",
                 "laravel/pint": "^1.27.0",
                 "mockery/mockery": "^1.6.12",
                 "orchestra/testbench": "^9.15.0|^10.6|^11.0",
@@ -1423,7 +1424,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-10-01T02:02:28+00:00"
+            "time": "2026-10-05T13:34:47+00:00"
         },
         {
             "name": "laravel/framework",
@@ -2799,20 +2800,20 @@
         },
         {
             "name": "nativephp/mobile-ui",
-            "version": "0.7.0",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-ui.git",
-                "reference": "59b5c8a38f8359900cc336169c58b8dc28c7fe42"
+                "reference": "3db3c9f0cb2cec0c51506aee29ee549198623c30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-ui/zipball/59b5c8a38f8359900cc336169c58b8dc28c7fe42",
-                "reference": "59b5c8a38f8359900cc336169c58b8dc28c7fe42",
+                "url": "https://api.github.com/repos/NativePHP/mobile-ui/zipball/3db3c9f0cb2cec0c51506aee29ee549198623c30",
+                "reference": "3db3c9f0cb2cec0c51506aee29ee549198623c30",
                 "shasum": ""
             },
             "require": {
-                "nativephp/mobile": "^4.5",
+                "nativephp/mobile": "^4.6",
                 "php": "^8.3"
             },
             "require-dev": {
@@ -2849,7 +2850,7 @@
             "description": "Native SwiftUI and Jetpack Composer components for NativePHP",
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-ui/issues",
-                "source": "https://github.com/NativePHP/mobile-ui/tree/0.7.0"
+                "source": "https://github.com/NativePHP/mobile-ui/tree/0.8.0"
             },
             "funding": [
                 {
@@ -2857,7 +2858,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-09-29T14:38:47+00:00"
+            "time": "2026-10-02T23:33:47+00:00"
         },
         {
             "name": "nesbot/carbon",
