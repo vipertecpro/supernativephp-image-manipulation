@@ -197,16 +197,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.5.1",
+            "version": "3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "528948210cc46f967a4b98e83b19e76f2b504993"
+                "reference": "9dfce66f1e97360ea5e6d3e38ab14277e4cc591e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/528948210cc46f967a4b98e83b19e76f2b504993",
-                "reference": "528948210cc46f967a4b98e83b19e76f2b504993",
+                "url": "https://api.github.com/repos/composer/semver/zipball/9dfce66f1e97360ea5e6d3e38ab14277e4cc591e",
+                "reference": "9dfce66f1e97360ea5e6d3e38ab14277e4cc591e",
                 "shasum": ""
             },
             "require": {
@@ -258,7 +258,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.5.1"
+                "source": "https://github.com/composer/semver/tree/3.5.2"
             },
             "funding": [
                 {
@@ -270,7 +270,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-05T13:12:12+00:00"
+            "time": "2026-10-22T15:37:26+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -2747,16 +2747,16 @@
         },
         {
             "name": "nativephp/mobile-camera",
-            "version": "1.0.4",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-camera.git",
-                "reference": "1cdbf3059517f3cf2b0e4a341b6c298eba4123f6"
+                "reference": "8a7d215413fb0979cb0c86f9c8499f883a671077"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-camera/zipball/1cdbf3059517f3cf2b0e4a341b6c298eba4123f6",
-                "reference": "1cdbf3059517f3cf2b0e4a341b6c298eba4123f6",
+                "url": "https://api.github.com/repos/NativePHP/mobile-camera/zipball/8a7d215413fb0979cb0c86f9c8499f883a671077",
+                "reference": "8a7d215413fb0979cb0c86f9c8499f883a671077",
                 "shasum": ""
             },
             "require": {
@@ -2796,9 +2796,9 @@
             "description": "Camera plugin for NativePHP Mobile (Photo capture, Video recording, Gallery picker)",
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-camera/issues",
-                "source": "https://github.com/NativePHP/mobile-camera/tree/1.0.4"
+                "source": "https://github.com/NativePHP/mobile-camera/tree/1.1.0"
             },
-            "time": "2026-07-17T01:38:16+00:00"
+            "time": "2026-10-22T15:11:58+00:00"
         },
         {
             "name": "nativephp/mobile-ui",
